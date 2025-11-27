@@ -2,92 +2,47 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AR ศึกกะหมังกุหนิง: แก้ไขจอดำ</title>
+    <title>AR ศึกกะหมังกุหนิง</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     <style>
         body { margin: 0; overflow: hidden; font-family: sans-serif; }
         .ui-overlay { position: absolute; bottom: 20px; width: 100%; text-align: center; pointer-events: none; z-index: 999; }
-        .scan-text { background: rgba(0,0,0,0.6); color: #ffd700; padding: 10px 20px; border-radius: 30px; display: inline-block; font-size: 14px; }
+        .scan-text { background: rgba(0,0,0,0.6); color: #ffd700; padding: 10px 20px; border-radius: 30px; display: inline-block; }
     </style>
 </head>
 <body>
-    <div class="ui-overlay"><div class="scan-text">📷 ส่องไปที่ภาพศึกสงคราม (ปกใหม่)</div></div>
+    <div class="ui-overlay"><div class="scan-text">📷 ส่องไปที่ปกหนังสือ (ภาพวาดการรบ)</div></div>
 
-    <!-- ลิงก์ Target เดิมของคุณครู -->
+    <!-- ลิงก์นี้เชื่อมกับ targets (5).mind ของคุณครูแล้ว -->
     <a-scene 
         mindar-image="imageTargetSrc: https://raw.githubusercontent.com/chomphoonuchk-sys/Thai-ar-assets3/main/targets%20(5).mind;" 
-        color-space="sRGB" 
-        renderer="colorManagement: true, physicallyCorrectLights" 
-        vr-mode-ui="enabled: false" 
-        device-orientation-permission-ui="enabled: false">
+        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
         <a-assets>
-            <!-- 
-               ✅ แก้ไขจุดสำคัญ: เพิ่ม crossorigin="anonymous" เพื่อแก้ปัญหารูปเป็นสีดำ 
-               และเปลี่ยนลิงก์รูปเป็น Imgur (โฮสต์รูปฟรี) ที่โหลดง่ายกว่า Wikimedia
-            -->
+            <!-- แก้จอดำด้วย crossorigin และใช้รูปที่โหลดง่าย -->
             <img id="img-kaman" src="https://i.imgur.com/8Qh1e4u.png" crossorigin="anonymous" />
             <img id="img-inao" src="https://i.imgur.com/O6S3y8M.png" crossorigin="anonymous" />
-            <img id="img-clash" src="https://cdn-icons-png.flaticon.com/512/7476/7476883.png" crossorigin="anonymous" />
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
+            <a-plane color="#000" width="1.2" height="1.6" opacity="0.3"></a-plane>
             
-            <!-- พื้นหลังจางๆ ช่วยให้ตัวละครเด่นขึ้น -->
-            <a-plane color="#000" width="1.2" height="1.6" opacity="0.4"></a-plane>
-
-            <!-- ========================================== -->
-            <!-- 🔴 ทัพกะหมังกุหนิง (ฝ่ายแดง) -->
-            <!-- Animation 1: เดินหน้า (เลื่อนตำแหน่ง Y) -->
-            <!-- Animation 2: โยกตัว (หมุน Z) ให้เหมือนเดิน -->
-            <!-- ========================================== -->
-            <a-entity 
-                position="0 0.5 0.1" 
-                animation="property: position; to: 0 0.1 0.1; dur: 4000; dir: alternate; loop: true; easing: linear">
-                
-                <a-image 
-                    src="#img-kaman" 
-                    width="0.6" height="0.8"
-                    animation__walk="property: rotation; from: 0 0 -5; to: 0 0 5; dur: 500; dir: alternate; loop: true; easing: easeInOutSine">
+            <!-- ทัพกะหมังกุหนิง (เดิน + โยกตัว) -->
+            <a-entity position="0 0.5 0.1" animation="property: position; to: 0 0.1 0.1; dur: 4000; dir: alternate; loop: true; easing: linear">
+                <a-image src="#img-kaman" width="0.6" height="0.8" 
+                    animation__walk="property: rotation; from: 0 0 -5; to: 0 0 5; dur: 500; dir: alternate; loop: true">
                 </a-image>
-                
-                <a-text value="Kaman Kungning" color="#ff5252" align="center" position="0 -0.5 0" scale="0.8 0.8 0.8"></a-text>
             </a-entity>
 
-
-            <!-- ========================================== -->
-            <!-- 💥 เอฟเฟกต์การปะทะ (หมุนติ้วๆ ตรงกลาง) -->
-            <!-- ========================================== -->
-            <a-image 
-                src="#img-clash" 
-                width="0.5" height="0.5" 
-                position="0 0 0.2" 
-                animation="property: scale; from: 0 0 0; to: 1.5 1.5 1.5; dur: 4000; dir: alternate; loop: true"
-                animation__spin="property: rotation; to: 0 0 360; dur: 2000; loop: true; easing: linear">
-            </a-image>
-
-
-            <!-- ========================================== -->
-            <!-- 🔵 ทัพอิเหนา (ฝ่ายน้ำเงิน) -->
-            <!-- ========================================== -->
-            <a-entity 
-                position="0 -0.5 0.1" 
-                animation="property: position; to: 0 -0.1 0.1; dur: 4000; dir: alternate; loop: true; easing: linear">
-                
-                <!-- scale="-1 1 1" คือกลับด้านรูปให้หันหน้าชนกัน -->
-                <a-image 
-                    src="#img-inao" 
-                    width="0.6" height="0.8" 
-                    scale="-1 1 1"
-                    animation__walk="property: rotation; from: 0 0 -5; to: 0 0 5; dur: 500; dir: alternate; loop: true; easing: easeInOutSine">
+            <!-- ทัพอิเหนา (เดิน + โยกตัว) -->
+            <a-entity position="0 -0.5 0.1" animation="property: position; to: 0 -0.1 0.1; dur: 4000; dir: alternate; loop: true; easing: linear">
+                <a-image src="#img-inao" width="0.6" height="0.8" scale="-1 1 1"
+                    animation__walk="property: rotation; from: 0 0 -5; to: 0 0 5; dur: 500; dir: alternate; loop: true">
                 </a-image>
-
-                <a-text value="Inao" color="#40c4ff" align="center" position="0 -0.5 0" scale="0.8 0.8 0.8"></a-text>
             </a-entity>
-
         </a-entity>
     </a-scene>
 </body>
